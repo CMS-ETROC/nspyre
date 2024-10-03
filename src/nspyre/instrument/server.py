@@ -34,7 +34,7 @@ INSTRUMENT_SERVER_DEFAULT_PORT = 42068
 """Default instrument server port."""
 
 INSTRUMENT_SERVER_DEFAULT_HOST = "127.0.0.1"
-"""Default instrument server port."""
+"""Default instrument server host."""
 
 RPYC_SYNC_TIMEOUT = 30
 """RPyC send/receive timeout in seconds (don't set to None)."""
@@ -100,6 +100,7 @@ class InstrumentServer(ClassicService):
         self._devs: Dict[str, Any] = {}
         # rpyc server port
         self._port = port
+        # rpyc server host
         self._host = host
         self._sync_timeout = sync_timeout
         # rpyc server
