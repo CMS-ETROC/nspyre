@@ -33,6 +33,9 @@ _logger = logging.getLogger(__name__)
 INSTRUMENT_SERVER_DEFAULT_PORT = 42068
 """Default instrument server port."""
 
+INSTRUMENT_SERVER_DEFAULT_HOST = "127.0.0.1"
+"""Default instrument server port."""
+
 RPYC_SYNC_TIMEOUT = 30
 """RPyC send/receive timeout in seconds (don't set to None)."""
 
@@ -81,11 +84,13 @@ class InstrumentServer(ClassicService):
     def __init__(
         self,
         port: int = INSTRUMENT_SERVER_DEFAULT_PORT,
+        host: int = INSTRUMENT_SERVER_DEFAULT_HOST,
         sync_timeout: float = RPYC_SYNC_TIMEOUT,
     ):
         """
         Args:
             port: Port number to use for the RPyC server.
+            host: Host to use for the RPyC server.
             sync_timeout: Time to wait for requests / function calls to finish.
         """
 
@@ -95,6 +100,7 @@ class InstrumentServer(ClassicService):
         self._devs: Dict[str, Any] = {}
         # rpyc server port
         self._port = port
+        self._host = host
         self._sync_timeout = sync_timeout
         # rpyc server
         self._rpyc_server = None
@@ -288,7 +294,7 @@ class InstrumentServer(ClassicService):
         _logger.info('Starting InstrumentServer RPyC server...')
         self._rpyc_server = ThreadedServer(
             self,
-            hostname='127.0.0.1',
+            hostname=self._host,
             port=self._port,
             protocol_config={
                 'allow_pickle': True,
